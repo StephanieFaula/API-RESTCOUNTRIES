@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { fetchCountries } from '../actions/index'
+import { connect } from 'react-redux';
+import { fetchCountries } from '../actions/index';
 
 class SearchBar extends Component {
 
@@ -9,15 +9,22 @@ class SearchBar extends Component {
     }
 
     renderSelecteCountries() {
+        
         return(
-            <select>
-                <option/>
+            <select className="form-control search_bar">
+                {this.props.countries.map(country => ( 
+                        <option value={country.code} key={country.code}>
+                            {country.name}
+                        </option>                
+                    ))
+                    
+                }
             </select>
         )
     }
     render(){
         return( 
-            <form>
+            <form className="form-group">
                 {this.renderSelecteCountries()}
             </form>
         )
@@ -28,4 +35,10 @@ const mapDispatchToProps = {
     fetchCountries
 };
 
-export default connect(undefined, mapDispatchToProps)(SearchBar);
+const mapStateToProps = (store) => {
+    return {
+        countries: store.countriesReducer.countries
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);
